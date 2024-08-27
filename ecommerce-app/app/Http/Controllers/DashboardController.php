@@ -1,32 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+    use App\Http\Controllers\Controller;
+    use App\Models\Product;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\DB;
+    use App\Models\ViewedProduct;
+    use App\Models\ProductCategory;
+    use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
-{
-    public function index(Request $request)
+    class DashboardController extends Controller
     {
         $products = Product::with('userReviews')
             ->withAvg('userReviews', 'rating')
             ->withCount('userReviews');
 
-        $sortAlphabet = $request->input('sort-alphabet');
-        $sortPrice = $request->input('sort-price');
-        $sortRating = $request->input('sort-rating');
-        $filterCategory = $request->input('category');
-        $search = $request->input('search');
 
-        // Check if multiple sorting options are selected at once
-        $sortingOptionsSelected = array_filter([$sortAlphabet, $sortPrice, $sortRating]);
-        if (count($sortingOptionsSelected) > 1) {
-            // Redirect back with an error message
-            return redirect('/dashboard')->with('error', 'Please select only one sorting option at a time.');
-        }
 
         // Filter by category
         if ($filterCategory) {
@@ -66,21 +56,38 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function search(Request $request)
-    {
-        $search = $request->input('search');
+            $products = $query->paginate(15);;
+            $recentlyViewedProducts = collect();
+            if (Auth::check()) {
+                $recentlyViewedProducts = ViewedProduct::where('user_id', Auth::id())
+                    ->with('product')
+                    ->orderBy('viewed_at', 'desc')
+                    ->take(5)
+                    ->get();
+            }
+            return view('dashboard', [
+                'products' => $products,
+                'categories' => $categories,
+                'recentlyViewedProducts' => $recentlyViewedProducts,
+                'trendingProducts' => $trendingProducts,
+            ]);
+        }
 
-        if ($search)
+        public function search(Request $request)
         {
-            $products = DB::table('products')->where('name', $search)->get();
+            $search = $request->input('search');
+
+            if ($search)
+            {
+                $products = DB::table('products')->where('name', $search)->get();
+                return view('dashboard', [
+                    'products' => $products,
+                ]);
+            }
+
+            $products = Product::all();
             return view('dashboard', [
                 'products' => $products,
             ]);
         }
-
-        $products = Product::all();
-        return view('dashboard', [
-            'products' => $products,
-        ]);
     }
-}
