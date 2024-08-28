@@ -14,12 +14,12 @@
     @include('layouts.navigation')
     <!-- Display Error Message -->
     @if (Session::has('error'))
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Error:</strong>
-            <span class="block sm:inline">{{ Session::get('error') }}</span>
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Error:</strong>
+                <span class="block sm:inline">{{ Session::get('error') }}</span>
+            </div>
         </div>
-    </div>
     @endif
 
     <!-- Filter & Sort Form -->
@@ -95,7 +95,8 @@
                 @foreach ($products as $product)
                     <div class="bg-white p-4 rounded-lg shadow">
                         <a href="{{ route('products.show', ['product' => $product->id]) }}">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-48 object-cover rounded">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                class="w-full h-48 object-cover rounded">
                         </a>
                         <h3 class="mt-4 text-lg font-semibold">
                             <a href="{{ route('products.show', ['product' => $product->id]) }}">{{ $product->name }}</a>
@@ -117,12 +118,16 @@
                                         d="m4.178 20.801 6.758-4.91 6.756 4.91-2.58-7.946 6.758-4.91h-8.352L10.936 0 8.354 7.945H0l6.758 4.91-2.58 7.946z" />
                                 </svg>
                             @endfor
-                            <span class="ml-2 text-gray-600">{{ $product->rating }} stars</span>
+                            <span
+                                class="ml-2 text-gray-600">{{ $product->user_reviews_avg_rating ? number_format($product->user_reviews_avg_rating, 1) : 0 }}</span>
                             <span class="ml-2 text-gray-600">({{ $product->user_reviews_count }} reviews)</span>
                         </div>
                     </div>
                 @endforeach
             </div>
+        </div>
+            <x-cart-side-bar />
+        <div>
         </div>
     </div>
 
