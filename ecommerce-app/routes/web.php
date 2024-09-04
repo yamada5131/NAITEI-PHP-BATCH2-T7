@@ -1,18 +1,23 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserReviewController;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Middleware\CheckOwner;
+
+use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductCategory;
-use App\Models\User;
-use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserReviewController;
 
 // Rest of the code...
 
@@ -76,7 +81,13 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::get('/products', [CategoryController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 require __DIR__.'/auth.php';
+
+
+
+
+

@@ -46,16 +46,17 @@ class CartController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
         if (session("card_id")) {
             $cart = ShoppingCart::findOrFail(session("card_id"));
             $order_items = $cart->products()->orderBy("id", "desc")->get()->all();
 
-            return view("cart.show", ["cart" => $cart, "order_items" => $order_items]);
+            return view("cart", ["cart" => $cart, "order_items" => $order_items]);
         } else {
-            $cart = $this->store();
-            return view("cart.show", ["cart" => $cart, "order_items" => null]);
+            $cart = null;
+            //$cart = $this->store();
+            return view("cart", ["cart" => $cart, "order_items" => null]);
         }
     }
 
