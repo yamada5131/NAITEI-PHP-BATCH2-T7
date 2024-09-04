@@ -8,24 +8,24 @@ use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
-    public function index()
-    {
-        $categories = ProductCategory::all();
-        return view('admin.categories.index',compact('categories'));
-    }
+    // public function index()
+    // {
+    //     $categories = ProductCategory::all();
+    //     return view('admin.categories.index',compact('categories'));
+    // }
 
     public function create()
     {
         return view('admin.categories.create');
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $validated = $request->validated();
 
         ProductCategory::create($validated);
 
-        return redirect()->route('categories.index')
+        return redirect()->route('/admin')
                         ->with('success','Category created successfully.');
     }
 
@@ -35,7 +35,7 @@ class CategoryController extends Controller
         return view('admin.categories.edit',compact('category'));
     }
 
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         $category = ProductCategory::findOrFail($id);
 
@@ -43,7 +43,7 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect()->route('categories.index')
+        return redirect()->route('/admin')
                         ->with('success','Category updated successfully');
     }
 
@@ -52,7 +52,7 @@ class CategoryController extends Controller
         $category = ProductCategory::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('categories.index')
+        return redirect()->route('/admin')
                         ->with('success','Category deleted successfully');
     }
 }

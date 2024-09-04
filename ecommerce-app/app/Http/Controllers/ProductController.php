@@ -10,11 +10,11 @@ use App\Models\UserReview;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        $products = Product::all();
-        return view('admin.products.index', compact('products'));
-    }
+    // public function index()
+    // {
+    //     $products = Product::all();
+    //     return view('admin.products.index', compact('products'));
+    // }
 
     public function show(Product $product)
     {
@@ -38,7 +38,7 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         $product = new Product($request->validated());
 
@@ -47,7 +47,7 @@ class ProductController extends Controller
         }
 
         $product->save();
-        return redirect()->route('products.index')
+        return redirect()->route('/admin')
             ->with('success', 'Product created successfully.');
     }
 
@@ -66,14 +66,14 @@ class ProductController extends Controller
         }
 
         $product->save();
-        return redirect()->route('products.index')
+        return redirect()->route('/admin')
             ->with('success', 'Product updated successfully.');
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index')
+        return redirect()->route('/admin')
             ->with('success', 'Product deleted successfully.');
     }
 }
