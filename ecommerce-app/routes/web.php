@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckOwner;
 
 use App\Models\User;
+use App\Http\Controllers\OrderDetailController;
 use App\Models\Product;
 use App\Models\ProductCategory;
 
@@ -33,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/order-details', [OrderDetailController::class, 'index'])->name('order-details.index');
+    Route::get('/order-details/{orderDetail}', [OrderDetailController::class, 'show'])->name('order-details.show');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
