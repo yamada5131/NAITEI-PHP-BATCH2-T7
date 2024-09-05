@@ -53,7 +53,7 @@
 						:id="$order->id"
 						:date="$order->order_date"
 						:total="$order->order_total"
-						:status="$order->order_status_id"
+						:status="$order->status->status"
 					/>
 					@endforeach
 				</div>

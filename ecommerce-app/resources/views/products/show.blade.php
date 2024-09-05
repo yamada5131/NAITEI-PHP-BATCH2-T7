@@ -90,39 +90,6 @@
         </div>
     </section>
 
-    <!-- Feedback Form (Visible to Authenticated Users Only) -->
-    @auth
-        <div class="w-1/2 mx-auto py-6 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold text-gray-800">Leave Your Feedback</h2>
-            <form action="{{ route('review.store', ['order_item_id' => $product['id']]) }}" method="POST">
-                @csrf
-                @method('POST')
-                <div class="mt-4">
-                    <label for="comment" class="block text-sm font-medium text-gray-700">Your Feedback</label>
-                    <textarea id="comment" name="comment" rows="4"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-                </div>
-                <div class="mt-4">
-                    <label for="rating" class="block text-sm font-medium text-gray-700">Rating</label>
-                    <select id="rating" name="rating"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        <option value="5">5 Stars</option>
-                        <option value="4">4 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="2">2 Stars</option>
-                        <option value="1">1 Star</option>
-                    </select>
-                </div>
-                <div class="mt-6">
-                    <button type="submit"
-                        class="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700">Submit
-                        Feedback
-                    </button>
-                </div>
-            </form>
-        </div>
-    @endauth
-
     <!-- Feedback Section -->
     <section class="w-1/2 mx-auto py-6 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold text-gray-800">Customer Feedback</h2>

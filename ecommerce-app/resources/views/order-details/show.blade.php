@@ -18,7 +18,7 @@
 			<h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the delivery of order {{ $orderDetail->id }}</h2>
 
 			<div class="mt-6 sm:mt-8 lg:flex lg:gap-8">
-				<div class="w-full overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 lg:max-w-xl xl:max-w-2xl">
+				<div class="w-full overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
 					@foreach ($orderItems as $orderItem)
 					<div class="space-y-4 p-6">
 						<div class="flex items-center gap-6">
@@ -37,6 +37,36 @@
 
 								<p class="text-xl font-bold leading-tight text-gray-900 dark:text-white">${{ $orderItem->product->price }}</p>
 							</div>
+						</div>
+						<div class="w-full mx-auto">
+							<form action="{{ route('review.store', ['order_item_id' => $orderItem->id]) }}" method="POST" class="w-full flex items-center gap-4">
+								@csrf
+								@method('POST')
+								<div class="mt-4 w-3/4">
+									<textarea id="comment" name="comment" rows="4" placeholder="Your feedback"
+										class="mt-1 block w-full h-12 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+								</div>
+								<div class="flex items-center gap-4">
+									<div class="mt-4">
+										<select id="rating" name="rating"
+											class="mt-1 block w-full h-12 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+											<option value="5">5 Stars</option>
+											<option value="4">4 Stars</option>
+											<option value="3">3 Stars</option>
+											<option value="2">2 Stars</option>
+											<option value="1">1 Star</option>
+										</select>
+									</div>
+									<div class="mt-6">
+										<button 
+											type="submit"
+											class="h-12 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none flex items-center justify-center"
+										>
+											Submit Feedback
+										</button>
+									</div>
+								</div>
+							</form>
 						</div>
 					</div>
 					@endforeach
