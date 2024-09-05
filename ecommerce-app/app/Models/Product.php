@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
 
@@ -44,9 +45,9 @@ class Product extends Model
         return $this->belongsToMany(ShoppingCart::class, 'shopping_cart_items', 'product_id', 'shopping_cart_id');
     }
 
-    public function orderItems(): BelongsToMany
+    public function orderItems(): HasMany
     {
-        return $this->belongsToMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class);
     }
 
     public function userReviews(): HasManyThrough
