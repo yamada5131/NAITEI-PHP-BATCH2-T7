@@ -15,7 +15,7 @@ class OrderDetailController extends Controller
      */
     public function index()
     {
-        $orders = OrderDetail::all();
+        $orders = OrderDetail::with('status')->get();
         return view('order-details.index', [
             'orders' => $orders,
         ]);
