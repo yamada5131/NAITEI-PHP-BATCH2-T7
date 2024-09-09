@@ -17,6 +17,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UserReviewController;
 use App\Http\Controllers\OrderDetailController;
 
@@ -91,6 +92,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/products', [CategoryController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/language/{lang}', [LanguageController::class, 'changeLanguage'])->name('locale');
+
 
 require __DIR__.'/auth.php';
 
