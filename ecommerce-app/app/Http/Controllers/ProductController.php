@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Http\Requests\ProductRequest;
 use App\Models\ProductCategory;
 use App\Models\UserReview;
+use App\Models\ViewedProduct;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
