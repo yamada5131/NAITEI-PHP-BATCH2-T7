@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ShoppingCart extends Model
 {
@@ -20,14 +23,9 @@ class ShoppingCart extends Model
         ];
     }
 
-    // public function products(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Product::class, 'shopping_cart_items', 'shopping_cart_id', 'product_id');
-    // }
-
     public function shoppingCartItems(): HasMany
     {
-        return $this->hasMany(ShoppingCartItem::class);
+        return $this->hasMany(ShoppingCartItem::class, 'shopping_cart_id');
     }
 
     public $incrementing = false;
@@ -41,3 +39,5 @@ class ShoppingCart extends Model
         });
     }
 }
+
+

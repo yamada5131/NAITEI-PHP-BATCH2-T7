@@ -63,10 +63,12 @@ class User extends Authenticatable
         return $this->hasMany(UserAddress::class);
     }
 
+    /*Payment where???
     public function userPayments(): HasMany
     {
         return $this->hasMany(UserPayment::class);
     }
+    */
 
     public function userReview(): HasMany
     {
@@ -76,14 +78,14 @@ class User extends Authenticatable
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->attributes['first_name'].' '.$this->attributes['last_name'],
+            get: fn($value) => $this->attributes['first_name'] . ' ' . $this->attributes['last_name'],
         );
     }
 
     protected function username(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => Str::slug($value),
+            set: fn($value) => Str::slug($value),
         );
     }
 
@@ -94,3 +96,5 @@ class User extends Authenticatable
         });
     }
 }
+
+

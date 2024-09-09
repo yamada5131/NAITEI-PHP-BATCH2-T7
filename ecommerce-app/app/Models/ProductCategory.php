@@ -25,15 +25,15 @@ class ProductCategory extends Model
         'deleted_at',
     ];
 
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
     public static function booted(): void
     {
         static::creating(function (ProductCategory $productCategory) {
             $productCategory->id = Str::uuid();
         });
-    }
-
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
     }
 }

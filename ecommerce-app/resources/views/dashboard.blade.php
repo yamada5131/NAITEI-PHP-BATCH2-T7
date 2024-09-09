@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    @vite('resources/css/app.css') <!-- Tailwind CSS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
@@ -97,8 +97,9 @@
                 @endforeach
             </div>
         </div>
-            <x-cart-side-bar />
+
         <div>
+            <x-cart-side-bar test="testdata" />
         </div>
     </div>
 
@@ -129,7 +130,6 @@
             </div>
         </div>
     </footer>
-
 </body>
 
 </html>
