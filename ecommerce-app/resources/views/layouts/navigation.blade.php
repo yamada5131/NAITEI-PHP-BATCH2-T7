@@ -1,8 +1,71 @@
-<nav class="bg-white shadow">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex items-center">
-                <a href="{{ route('home.index') }}" class="flex-shrink-0 text-xl font-bold text-gray-800">My Shop</a>
+<nav class="bg-white dark:bg-gray-800 antialiased shadow">
+  <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
+    <div class="flex items-center justify-between">
+      
+      <!-- Logo and Navigation Links -->
+      <div class="flex items-center space-x-8">
+        <div class="shrink-0">
+          <a href="{{ route('home.index') }}" title="" class="">
+            <img class="block w-auto h-8 dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full.svg" alt="">
+            <img class="hidden w-auto h-8 dark:block" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full-dark.svg" alt="">
+          </a>
+        </div>
+
+        <ul class="flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
+          <li>
+            <a href="#" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Home
+            </a>
+          </li>
+          <li class="shrink-0">
+            <a href="#" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Best Sellers
+            </a>
+          </li>
+          <li class="shrink-0">
+            <a href="#" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Gift Ideas
+            </a>
+          </li>
+          <li class="shrink-0">
+            <a href="#" title="" class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Today's Deals
+            </a>
+          </li>
+          <li class="shrink-0">
+            <a href="#" title="" class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Sell
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Search Bar and Account Dropdown -->
+      <div class="flex items-center lg:space-x-2">
+        
+        <!-- Search Bar -->
+        <form action="{{ route('dashboard.index') }}" method="GET" class="relative flex">
+          <input 
+              type="text"
+              name="search"
+              class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+              placeholder="Search products..."
+              value="{{ request('search') }}">
+              
+              @if(is_array(request('categories')))
+            @foreach(request('categories') as $categoryId)
+              <input type="hidden" name="categories[]" value="{{ $categoryId }}">
+            @endforeach
+          @endif
+
+          <input type="hidden" name="sort" value="{{ request('sort') }}"> <!-- Keep sorting option -->
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <!-- Search Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 text-gray-500">
+                  <path d="M10.035,18.069a7.981,7.981,0,0,0,3.938-1.035l3.332,3.332a2.164,2.164,0,0,0,3.061-3.061l-3.332-3.332A8.032,8.032,0,0,0,4.354,4.354a8.034,8.034,0,0,0,5.681,13.715ZM5.768,5.768A6.033,6.033,0,1,1,4,10.035,5.989,5.989,0,0,1,5.768,5.768Z"/>
+              </svg>
+          </div>
+        </form>
 
         <!-- Cart Icon -->
         <button id="myCartDropdownButton1" data-dropdown-toggle="myCartDropdown1" type="button" class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">

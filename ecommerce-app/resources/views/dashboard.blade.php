@@ -17,12 +17,12 @@
     
     <!-- Display Error Message -->
     @if (Session::has('error'))
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Error:</strong>
-                <span class="block sm:inline">{{ Session::get('error') }}</span>
-            </div>
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline">{{ Session::get('error') }}</span>
         </div>
+    </div>
     @endif
 
     <!-- Filter & Sort Form -->
@@ -89,20 +89,104 @@
                 </button>
             </div>
         </form>
-    </div>
-
-    <!-- Main Content -->
-    <div class="flex-grow">
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach ($products as $product)
-                    <x-product :product="$product" />
-                @endforeach
+    </div> -->
+<!-- Recently Viewed Products Section -->
+<!-- Recently Viewed Products Section -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
+    @foreach ($recentlyViewedProducts as $viewedProduct)
+        <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col justify-between">
+            
+            <!-- Product Image -->
+            <div class="h-56 w-full">
+                <a href="{{ route('products.show', ['product' => $viewedProduct->product->id]) }}">
+                    <img class="mx-auto h-full w-full object-cover dark:hidden" src="{{ json_decode($viewedProduct->product->image_url)[0] }}" alt="{{ $viewedProduct->product->name }}" />
+                </a>
+            </div>
+            
+            <!-- Product Details -->
+            <div class="pt-6 flex-grow">
+                <!-- Product Name with a fixed height to prevent misalignment -->
+                <a href="{{ route('products.show', ['product' => $viewedProduct->product->id]) }}" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white truncate block">
+    {{ $viewedProduct->product->name }}
+</a>
+                
+                <!-- Product Description (limit the height to prevent overflow) -->
+                <p class="text-gray-500 mt-2 line-clamp-2 max-h-12 overflow-hidden">
+                    {{ $viewedProduct->product->description }}
+                </p>
+                
+                <!-- Fixed height for reviews section -->
+                <div class="mt-2 flex items-center gap-2">
+                    <div class="flex items-center">
+                        @for ($i = 0; $i < floor($viewedProduct->product->user_reviews_avg_rating); $i++)
+                            <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
+                            </svg>
+                        @endfor
+                        @for ($i = $viewedProduct->product->user_reviews_avg_rating; $i < 5; $i++)
+                            <svg class="h-4 w-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
+                            </svg>
+                        @endfor
+                        <span class="ml-2 text-gray-600">{{ number_format($viewedProduct->product->user_reviews_avg_rating, 1) }}</span>
+                        <span class="ml-2 text-gray-600">({{ $viewedProduct->product->user_reviews_count }} reviews)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Price (Always at the bottom) -->
+            <div class="mt-auto">
+                <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">${{ number_format($viewedProduct->product->price, 2) }}</p>
             </div>
         </div>
-            <x-cart-side-bar />
-        <div>
-        </div>
+    @endforeach
+</div>
+
+
+
+
+
+<!-- Trending Products Section -->
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <h2 class="text-2xl font-semibold text-gray-800">Trending Products</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
+        @foreach ($trendingProducts as $product)
+            @php
+                // Decode the JSON to get the first image URL
+                $imageUrls = json_decode($product->image_url, true);
+                $firstImageUrl = $imageUrls[0] ?? '';  // Get the first image or default to empty string
+            @endphp
+            <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="h-56 w-full">
+                    <a href="{{ route('products.show', ['product' => $product->id]) }}">
+                        <img class="mx-auto h-full dark:hidden object-cover" src="{{ $firstImageUrl }}" alt="{{ $product->name }}" />
+                    </a>
+                </div>
+                <div class="pt-6">
+                    <a href="{{ route('products.show', ['product' => $product->id]) }}" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ $product->name }}</a>
+                    <p class="text-gray-500 mt-2">{{ $product->description }}</p>
+                    <div class="mt-2 flex items-center gap-2">
+                        <div class="flex items-center">
+                            @for ($i = 0; $i < floor($product->user_reviews_avg_rating); $i++)
+                                <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
+                                </svg>
+                            @endfor
+                            @for ($i = $product->user_reviews_avg_rating; $i < 5; $i++)
+                                <svg class="h-4 w-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
+                                </svg>
+                            @endfor
+                            <span class="ml-2 text-gray-600">{{ number_format($product->user_reviews_avg_rating, 1) }}</span>
+                            <span class="ml-2 text-gray-600">({{ $product->user_reviews_count }} reviews)</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between gap-4">
+                        <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">${{ number_format($product->price, 2) }}</p>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
 </div>
 
@@ -144,7 +228,7 @@
 <!-- Sort and Filter Form -->
 <form id="filterSortForm" method="GET" action="{{ route('dashboard.index') }}">
     <!-- Existing filters will be passed here as hidden inputs -->
-    <input type="hidden" name="sort" id="sortInput" value="">
+    <input type="hidden" name="search" value="{{ request('search') }}">
     @if(is_array(request('categories')))
     @foreach(request('categories') as $categoryId)
         <input type="hidden" name="categories[]" value="{{ $categoryId }}">
@@ -152,8 +236,8 @@
 @else
     <input type="hidden" name="categories[]" value="{{ request('categories') }}">
 @endif
-
-    <input type="hidden" name="search" value="{{ request('search') }}">
+<input type="hidden" name="sort" id="sortInput" value="">
+   
     <!-- Any other necessary filters -->
 </form>
 
@@ -195,9 +279,6 @@
                 <button type="reset" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
             </div>
         </div>
-            <x-cart-side-bar />
-        <div>
-        </div>
     </div>
 </form>
 
@@ -205,13 +286,30 @@
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @foreach ($products as $product)
+                @php
+                    // Decode the image_url JSON field and extract the first image URL
+                    $imageUrls = json_decode($product->image_url, true);
+                    $firstImageUrl = $imageUrls[0] ?? '';
+                @endphp
+
                 <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                     <div class="h-56 w-full">
                         <a href="{{ route('products.show', ['product' => $product->id]) }}">
-                            <img class="mx-auto h-full dark:hidden" src="{{ $product->image_url }}" alt="{{ $product->name }}" />
+                            <img class="mx-auto h-full w-full object-cover dark:hidden" src="{{ $firstImageUrl }}" alt="{{ $product->name }}" />
                         </a>
                     </div>
                     <div class="pt-6">
+                    <button 
+    id="like-btn-{{ $product->id }}" 
+    class="rounded-full border border-slate-300 p-2.5 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 like-btn" 
+    type="button" 
+    data-product-id="{{ $product->id }}"
+    data-liked="{{ in_array($product->id, $likedProductIds) ? 'true' : 'false' }}">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="{{ in_array($product->id, $likedProductIds) ? 'red' : 'currentColor' }}" class="w-4 h-4">
+      <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+    </svg>
+</button>
+
                         <a href="{{ route('products.show', ['product' => $product->id]) }}" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ $product->name }}</a>
                         <p class="text-gray-500 mt-2">{{ $product->description }}</p>
                         <p class="text-gray-600 mt-2">Category: {{ $product->category?->name }}</p>
@@ -232,14 +330,11 @@
                             </div>
                         </div>
                         <div class="mt-4 flex items-center justify-between gap-4">
+                            
                             <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">${{ number_format($product->price, 2) }}</p>
                             <button type="button" class="inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800">
-                            <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
-              </svg>
-    Add to cart
-    </button>
-
+                                Add to cart
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -247,9 +342,10 @@
         </div>
     </div>
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    {{ $products->appends(request()->query())->links('pagination::tailwind') }}
+        {{ $products->appends(request()->query())->links('pagination::tailwind') }}
+    </div>
 </div>
-</div>
+
 
 
 
@@ -300,10 +396,53 @@ function applySort(sortOption) {
     // Submit the form with existing filters and the selected sort option
     document.getElementById('filterSortForm').submit();
 }
+
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const likeButtons = document.querySelectorAll('.like-btn');
 
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            const isLiked = this.getAttribute('data-liked') === 'true';
+
+            fetch('/products/toggle-like', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    product_id: productId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'liked') {
+                    this.querySelector('svg').setAttribute('fill', 'red');
+                    this.setAttribute('data-liked', 'true');
+                } else if (data.status === 'unliked') {
+                    this.querySelector('svg').setAttribute('fill', 'currentColor');
+                    this.setAttribute('data-liked', 'false');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+</script>
 
 </body>
 
 </html>
+
+
+
+
+
+
+
+ <!-- Filter modal -->
