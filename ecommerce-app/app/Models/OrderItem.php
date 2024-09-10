@@ -12,6 +12,8 @@ class OrderItem extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function userReview(): HasOne
     {
         return $this->hasOne(UserReview::class);

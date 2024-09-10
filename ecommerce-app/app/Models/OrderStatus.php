@@ -15,6 +15,8 @@ class OrderStatus extends Model
 
     protected $keyType = 'string';
 
+    protected $guarded = [];
+
     public static function booted(): void
     {
         static::creating(function (OrderStatus $orderStatus) {

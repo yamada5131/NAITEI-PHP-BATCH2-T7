@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Address extends Model
@@ -19,5 +20,10 @@ class Address extends Model
         static::creating(function (Address $address) {
             $address->id = Str::uuid();
         });
+    }
+
+    public function country(): HasOne
+    {
+        return $this->hasOne(Country::class);
     }
 }

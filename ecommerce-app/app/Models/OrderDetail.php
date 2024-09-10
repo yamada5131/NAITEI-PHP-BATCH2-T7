@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Str;
 
 class OrderDetail extends Model
 {
@@ -17,16 +16,18 @@ class OrderDetail extends Model
 
     protected $keyType = 'string';
 
+    protected $guarded = [];
+
+    protected $casts = [
+        'id' => 'string',
+    ];
+
     public static function booted(): void
     {
         static::creating(function (OrderDetail $orderDetail) {
             $orderDetail->id = Str::uuid();
         });
     }
-    
-    protected $casts = [
-        'id' => 'string'
-    ];
 
     public function orderItems(): HasMany
     {
@@ -34,12 +35,17 @@ class OrderDetail extends Model
     }
 
     public function status(): BelongsTo
-    {  
+    {
         return $this->belongsTo(OrderStatus::class, 'order_status_id');
     }
 
-    public function user(): BelongsTo
+    public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
     }
 }

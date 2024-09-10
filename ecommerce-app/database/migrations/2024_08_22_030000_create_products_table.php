@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,9 +16,8 @@ return new class () extends Migration {
             $table->text('description')->nullable();
             $table->string('image_url')->nullable();
             $table->integer('qty_in_stock')->default(0);
-            $table->foreignUuid('product_category_id')->references('id')->on('product_categories')->onUpdate('cascade')
-                ->onDelete('cascade');
-
+            $table->foreignUuid('product_category_id')->references('id')->on('product_categories')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->decimal('price', 10, 2); // Added price field
             $table->timestamps();
         });

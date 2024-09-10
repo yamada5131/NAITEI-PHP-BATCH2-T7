@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Product;
 use App\Http\Requests\ProductRequest;
+use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\UserReview;
-use App\Models\ViewedProduct;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // public function index()
-    // {
-    //     $products = Product::all();
-    //     return view('admin.products.index', compact('products'));
-    // }
+    public function index()
+    {
+        $products = Product::all();
+
+        return view('admin.crud.products', compact('products'));
+    }
 
     public function show(Product $product)
     {
-        $userReviews = UserReview::withWhereHas('orderItem', function ($query) use ($product){
+        $userReviews = UserReview::withWhereHas('orderItem', function ($query) use ($product) {
             $query->where('product_id', $product->id);
         })->get();
         $userReviewCount = $userReviews->count();
         $userReviewAverage = $userReviews->avg('rating');
-        
+
         return view('products.show', [
             'product' => $product,
             'userReviews' => $userReviews,
@@ -37,45 +36,51 @@ class ProductController extends Controller
     public function create()
     {
         $categories = ProductCategory::all();
+
         return view('admin.products.create', compact('categories'));
-    }
-
-    public function store(ProductRequest $request)
-    {
-        $product = new Product($request->validated());
-
-        if ($request->hasFile('image')) {
-           $product->image = $request->file('image')->store('products', 'public');
-        }
-
-        $product->save();
-        return redirect()->route('/admin')
-            ->with('success', 'Product created successfully.');
     }
 
     public function edit(Product $product)
     {
         $categories = ProductCategory::all();
+
         return view('admin.products.edit', compact('product'));
     }
 
     public function update(ProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        Product::where('id', $product->id)
+            ->update([
+                'name' => $request->name,
+                //                'description' => $request->description,
+                'price' => $request->price,
+                'image_url' => $request->image_url,
+                'qty_in_stock' => $request->qty_in_stock,
+            ]);
 
-        if ($request->hasFile('image')) {
-            $product->image = $request->file('image')->store('products', 'public');
-        }
+        return redirect(route('admin.products.index'));
+    }
+
+    public function store(Request $request)
+    {
+        $product = new Product();
+
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->image_url = $request->image_url;
+        $product->qty_in_stock = $request->qty_in_stock;
+        $product->product_category_id = '8ce2ad96-0604-4c5a-8bee-bdd91462d580';
 
         $product->save();
-        return redirect()->route('/admin')
-            ->with('success', 'Product updated successfully.');
+
+        return redirect(route('admin.products.index'));
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('/admin')
-            ->with('success', 'Product deleted successfully.');
+
+        return redirect(route('admin.products.index'));
     }
 }

@@ -9,12 +9,11 @@
     @vite('resources/css/app.css') <!-- Tailwind CSS -->
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen bg-gray-100">
 
     <!-- Navigation Bar -->
     @include('layouts.navigation')
 
-    
     <!-- Display Error Message -->
     @if (Session::has('error'))
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -84,7 +83,7 @@
             </div>
             <div class="mt-6 text-right">
                 <button type="submit"
-                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    class="inline-flex justify-center py-2 px-4 text-sm font-medium text-white bg-indigo-600 rounded-md border border-transparent shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
                     Apply Filters
                 </button>
             </div>
@@ -93,11 +92,138 @@
 
     <!-- Main Content -->
     <div class="flex-grow">
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($products as $product)
                     <x-product :product="$product" />
+                    <div class="p-4 bg-white rounded-lg shadow">
+                        <a href="{{ route('products.show', ['product' => $product->id]) }}">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                class="object-cover w-full h-48 rounded">
+                        </a>
+                        <h3 class="mt-4 text-lg font-semibold">
+                            <a
+                                href="{{ route('products.show', ['product' => $product->id]) }}">{{ $product->name }}</a>
+                        </h3>
+                        <p class="text-gray-500">{{ $product->description }}</p>
+                        <p class="mt-2 text-gray-600">Category: {{ $product->category->name }}</p>
+                        <p class="mt-2 font-bold text-gray-800">${{ number_format($product->price, 2) }}</p>
+                        <div class="flex items-center mt-2">
+                            <!-- Display stars for the product -->
+                            @for ($i = 0; $i < $product->rating; $i++)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="21.87" height="20.801"
+                                    class="text-yellow-400 fill-current">
+                                    <path
+                                        d="m4.178 20.801 6.758-4.91 6.756 4.91-2.58-7.946 6.758-4.91h-8.352L10.936 0 8.354 7.945H0l6.758 4.91-2.58 7.946z" />
+                                </svg>
+                            @endfor
+                            @for ($i = $product->rating; $i < 5; $i++)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="21.87" height="20.801"
+                                    class="text-gray-300 fill-current">
+                                    <path
+                                        d="m4.178 20.801 6.758-4.91 6.756 4.91-2.58-7.946 6.758-4.91h-8.352L10.936 0 8.354 7.945H0l6.758 4.91-2.58 7.946z" />
+                                </svg>
+                            @endfor
+                            <span class="ml-2 text-gray-600">{{ $product->rating }} stars</span>
+                            <span class="ml-2 text-gray-600">({{ $product->user_reviews_count }} reviews)</span>
+                        </div>
+                    </div>
                 @endforeach
+            </div>
+        </div>
+        <x-cart-side-bar />
+        <div>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 flex justify-end items-center space-x-4">
+    <!-- Filter Button -->
+    <button data-modal-toggle="filterModal" data-modal-target="filterModal" type="button" class="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+        <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z" />
+        </svg>
+        Filters
+        <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+        </svg>
+    </button>
+
+<!-- Sort Button -->
+<button id="sortDropdownButton1" data-dropdown-toggle="dropdownSort1" type="button" class="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+    <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4" />
+    </svg>
+    Sort
+    <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+    </svg>
+</button>
+
+<!-- Sort Dropdown -->
+<div id="dropdownSort1" class="z-50 hidden w-40 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700">
+    <ul class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400" aria-labelledby="sortDropdownButton1">
+        <li><button type="button" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" onclick="applySort('az')">A-Z</button></li>
+        <li><button type="button" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" onclick="applySort('za')">Z-A</button></li>
+        <li><button type="button" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" onclick="applySort('low-high')">Increasing price</button></li>
+        <li><button type="button" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" onclick="applySort('high-low')">Decreasing price</button></li>
+        <li><button type="button" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" onclick="applySort('rating-low-high')">Increasing ratings</button></li>
+        <li><button type="button" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" onclick="applySort('rating-high-low')">Decreasing ratings</button></li>
+    </ul>
+</div>
+
+<!-- Sort and Filter Form -->
+<form id="filterSortForm" method="GET" action="{{ route('dashboard.index') }}">
+    <!-- Existing filters will be passed here as hidden inputs -->
+    <input type="hidden" name="sort" id="sortInput" value="">
+    @if(is_array(request('categories')))
+    @foreach(request('categories') as $categoryId)
+        <input type="hidden" name="categories[]" value="{{ $categoryId }}">
+    @endforeach
+@else
+    <input type="hidden" name="categories[]" value="{{ request('categories') }}">
+@endif
+
+    <input type="hidden" name="search" value="{{ request('search') }}">
+    <!-- Any other necessary filters -->
+</form>
+
+</div>
+<form action="{{ route('dashboard.index') }}" method="get" id="filterModal" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
+    <div class="relative h-full w-full max-w-xl md:h-auto">
+        <!-- Modal content -->
+        <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
+            <!-- Modal header -->
+            <div class="flex items-start justify-between rounded-t p-4 md:p-5">
+                <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filters</h3>
+                <button type="button" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="filterModal">
+                    <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="px-4 md:px-5">
+                <div class="flex flex-wrap gap-4">
+                    <div class="w-full">
+                        <h5 class="text-lg font-medium uppercase text-black dark:text-white">Category</h5>
+                        <!-- Category List -->
+                        <div class="grid grid-cols-2 gap-4">
+                            @foreach($categories as $category)
+                            <div class="flex items-center">
+                                <input id="category-{{ $category->id }}" type="checkbox" value="{{ $category->id }}" name="categories[]" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600">
+                                <label for="category-{{ $category->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->name }} ({{ $category->products_count }})</label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center space-x-4 rounded-b p-4 dark:border-gray-600 md:p-5">
+                <button type="submit" class="rounded-lg bg-primary-700 px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-800 dark:focus:ring-primary-800">Show 0 results</button>
+                <button type="reset" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
             </div>
         </div>
             <x-cart-side-bar />
@@ -255,7 +381,7 @@
 
 @include('layouts.footer')
     <!-- Footer -->
-    
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

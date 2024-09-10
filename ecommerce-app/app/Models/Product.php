@@ -17,14 +17,7 @@ class Product extends Model
 
     public $incrementing = false;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'image',
-        'qty_in_stock',
-        'category_id',
-        'price',
-    ];
+    protected $guarded = [];
 
     protected $keyType = 'string';
 
@@ -35,7 +28,7 @@ class Product extends Model
         });
     }
 
-    public function category(): BelongsTo
+    public function categories(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }

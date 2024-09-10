@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class ShoppingCartItem extends Model
 {
@@ -24,17 +22,15 @@ class ShoppingCartItem extends Model
         return $this->belongsTo(ShoppingCart::class, 'shopping_cart_id');
     }
 
-    public function product(): Product
-    {
-        return $this->belongsTo(Product::class, 'product_id')->first();
-    }
-
     public static function booted(): void
     {
         static::creating(function (ShoppingCartItem $shoppingCartItem) {
             $shoppingCartItem->id = Str::uuid();
         });
     }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
-
-

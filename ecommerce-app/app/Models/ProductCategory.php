@@ -31,9 +31,4 @@ class ProductCategory extends Model
             $productCategory->id = Str::uuid();
         });
     }
-
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class,'product_category_id');
-    }
 }
