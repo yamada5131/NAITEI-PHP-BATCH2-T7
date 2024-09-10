@@ -6,11 +6,11 @@ use App\Models\User;
 
 use App\Http\Requests\ProfileUpdateRequest;
 
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -30,16 +30,15 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = User::find($request->user()->id);
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
 
-        /*
         if ($request->hasFile('photo')) {
             $avatar = new ImageController();
             $imageUrl = $avatar->storeImage($request, 'profile');
             $user->photo = $imageUrl;
         }
-        */
 
         $user->save();
 

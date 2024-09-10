@@ -44,13 +44,11 @@ class RegisteredUserController extends Controller
         $user->telephone = $request->telephone;
         $user->is_admin = false;
 
-        /*
         if ($request->hasFile('photo')) {
             $avatar = new ImageController();
             $imageUrl = $avatar->storeImage($request, 'profile');
             $user->photo = $imageUrl;
         }
-        */
 
         $user->save();
 

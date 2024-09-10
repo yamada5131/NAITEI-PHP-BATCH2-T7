@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\CheckOwner;
@@ -94,6 +95,8 @@ Route::get('/products', [CategoryController::class, 'index'])->name('products.in
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/language/{lang}', [LanguageController::class, 'changeLanguage'])->name('locale');
 
+Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google-auth');
+Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google-callback');
 
 require __DIR__.'/auth.php';
 
