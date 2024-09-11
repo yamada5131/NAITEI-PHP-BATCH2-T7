@@ -37,4 +37,9 @@ class OrderDetail extends Model
     {  
         return $this->belongsTo(OrderStatus::class, 'order_status_id');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
