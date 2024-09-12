@@ -2,23 +2,87 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     return view('users.index', [
-    //         'users' => User::all(),
-    //     ]);
-    // }
+    public function index()
+    {
+        return view('admin.crud.users', [
+            'users' => User::all(),
+        ]);
+    }
+
+    public function exportCSV()
+    {
+        $filename = 'user-data.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        return response()->stream(function () {
+            $handle = fopen('php://output', 'w');
+
+            // Add CSV headers
+            fputcsv($handle, [
+                'First Name',
+                'Last Name',
+                'Email',
+                'Phone Number',
+                'Address',
+            ]);
+
+            // Fetch and process data in chunks
+            User::query()->chunk(25, function ($users) use ($handle) {
+
+                foreach ($users as $user) {
+                    $addresses = $this->getAddresses($user);
+                    $data = [
+                        $user->first_name ?? '',
+                        $user->last_name ?? '',
+                        $user->email ?? '',
+                        $user->telephone ?? '',
+                        $addresses,
+                    ];
+                    // Write data to a CSV file.
+                    fputcsv($handle, $data);
+                }
+            });
+
+            // Close CSV file handle
+            fclose($handle);
+        }, 200, $headers);
+    }
+
+    private function getAddresses($user)
+    {
+        if (! isset($user->userAddresses)) {
+            return [];
+        }
+
+        return $user->userAddresses->map(function ($address) {
+            return implode(', ', array_filter([
+                $address->address->address_line1 ?? '',
+                $address->address->address_line2 ?? '',
+                $address->address->city ?? '',
+                $address->address->state ?? '',
+                $address->address->country->country_name ?? '',
+                $address->address->postal_code ?? '',
+            ]));
+        })->implode('; ');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -31,19 +95,27 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $user = new User;
-        $user->id = Str::uuid();
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->telephone = $request->telephone;
-        $user->is_admin = false;
-        $user->save();
-        return redirect('/admin');
+        $validated = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            $new_image = $request->file('photo')->store('users');
+        } else {
+            $new_image = null;
+        }
+
+        $user = User::create([
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'username' => $validated['username'],
+            'email' => $validated['email'],
+            'photo' => $new_image,
+            'telephone' => $validated['telephone'],
+            'password' => Hash::make($validated['new_password']),
+        ]);
+
+        return redirect(route('admin.users.index'));
     }
 
     /**
@@ -67,14 +139,38 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        User::where('id', $user->id)
+        if ($request->hasFile('new_image')) {
+            $new_image = $request->file('new_image')->store('avatars');
+
+            if ($user->photo && Storage::exists($user->photo)) {
+                Storage::delete($user->photo);
+            }
+        } else {
+            $new_image = $user->photo;
+        }
+
+        User::query()->where('id', $user->id)
             ->update([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'username' => $request->username,
+                'email' => $request->email,
+                'photo' => $new_image,
                 'telephone' => $request->telephone,
+                'password' => Hash::make($request->new_password),
             ]);
-        return redirect('/admin');
+
+        return redirect(route('admin.users.index'));
+    }
+
+    public function toggleStatus(User $user)
+    {
+        User::query()->where('id', $user->id)
+            ->update([
+                'is_active' => ! ($user->is_active),
+            ]);
+
+        return redirect(route('admin.users.index'));
     }
 
     /**
@@ -84,6 +180,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect('/admin');
+        return redirect(route('admin.users.index'));
     }
 }

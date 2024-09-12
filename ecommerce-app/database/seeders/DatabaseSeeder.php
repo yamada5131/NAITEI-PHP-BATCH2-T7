@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $countries = Country::factory(10)->create();
 
         // Seed Addresses and set a default address for each User
-        $users = User::factory(10)->create()->each(function ($user) use ($countries) {
+        User::factory(10)->create()->each(function ($user) use ($countries) {
 
             $addresses = Address::factory(rand(3, 5))->create([
                 'country_id' => $countries->random()->id,
@@ -83,7 +83,6 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $user->id,
                 'product_id' => $products->random()->id,
             ]);
-
         });
 
         // Create parent categories
