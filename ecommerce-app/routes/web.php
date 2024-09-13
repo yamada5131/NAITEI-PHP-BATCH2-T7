@@ -17,6 +17,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UserReviewController;
 use App\Http\Controllers\OrderDetailController;
@@ -29,6 +30,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('send_email', [EmailController::class, 'store'])->name('email.store');
 
 // Profile management routes
 Route::middleware('auth')->group(function () {

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderDetailController extends Controller
 {
@@ -15,7 +16,7 @@ class OrderDetailController extends Controller
      */
     public function index()
     {
-        $orders = OrderDetail::with('status')->get();
+        $orders = OrderDetail::with('status')->where('user_id', Auth::id())->get();
         return view('order-details.index', [
             'orders' => $orders,
         ]);
