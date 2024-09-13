@@ -1,5 +1,18 @@
 <?php
 
+use App\Http\Controllers\GoogleAuthController;
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Middleware\CheckOwner;
+
+use App\Models\User;
+use App\Models\Product;
+use App\Models\ProductCategory;
+
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -124,4 +137,6 @@ Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogl
 //
 // Route::get('/products', [CategoryController::class, 'index'])->name('products.index');
 // Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
 require __DIR__.'/auth.php';
+

@@ -56,21 +56,6 @@ class CartController extends Controller
 
         $products = Product::with('userReviews')->withAvg('userReviews', 'rating')->withCount('userReviews')->take(3)->get()->sortByDesc(['trendRating']);
 
-        /*
-        if (session("card_id")) {
-            $cart = ShoppingCart::find(session("card_id"));
-            $cart_items = $cart->shoppingCartItems()->orderBy("id", "desc")->get()->all();
-            //$order_items = $cart->products()->orderBy("id", "desc")->get()->all();
-
-            return view("cart", ["cart" => $cart, "cart_items" => $cart_items]);
-        } else {
-            $cart = $this->store();
-            $cart_items = $cart->shoppingCartItems()->orderBy("id", "desc")->get()->all();
-
-            return view("cart", ["cart" => $cart, "cart_items" => $cart_items]);
-        }
-        */
-
         return view("cart", ["cart" => $cart, "cart_items" => $cart_items, "trend_items" => $products]);
     }
 

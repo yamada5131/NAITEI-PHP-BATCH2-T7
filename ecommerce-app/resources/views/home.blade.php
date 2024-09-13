@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Home</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
 
-    <!-- Navigation Bar -->
-    @include('layouts.navigation')
+<x-layout>
 
     <!-- Main Content -->
     <div class="flex-grow">
@@ -21,17 +11,8 @@
                 @endforeach
             </div>
         </div>
-
-        <div>
-            <x-cart-side-bar />
-        </div>
     </div>
 
-        <div>
-            <x-cart-side-bar />
-        </div>
-    </div>
-<x-layout>
     <section class="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-12">
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
             <!-- Heading & Filters -->
@@ -76,7 +57,10 @@
                             </li>
                         </ol>
                     </nav>
-                    <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Electronics</h2>
+
+                    <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Electronics
+                    </h2>
+
                 </div>
                 <div class="flex items-center space-x-4">
                     <button data-modal-toggle="filterModal" data-modal-target="filterModal" type="button"
@@ -153,11 +137,11 @@
                         <div class="h-56 w-full">
                             <a href="#">
                                 <img class="mx-auto h-full dark:hidden"
-                                    src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
-                                    alt="" />
+
+                                    src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="" />
                                 <img class="mx-auto hidden h-full dark:block"
-                                    src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                                    alt="" />
+                                    src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg" alt="" />
+
                             </a>
                         </div>
                         <div class="pt-6">
@@ -190,9 +174,10 @@
                                         <span class="sr-only"> Add to Favorites </span>
                                         <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round"
-                                                stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z" />
+
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z" />
+
                                         </svg>
                                     </button>
                                     <div id="tooltip-add-to-favorites" role="tooltip"
@@ -241,7 +226,10 @@
                                 </div>
 
                                 <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                    {{ $product->user_reviews_avg_rating }}</p>
+
+                                    {{ $product->user_reviews_avg_rating }}
+                                </p>
+
                                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
                                     ({{ $product->user_reviews_count }})</p>
                             </div>
@@ -273,9 +261,10 @@
 
                                 <button type="button"
                                     class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                    <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        fill="none" viewBox="0 0 24 24">
+
+                                    <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                             stroke-width="2"
                                             d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
@@ -303,8 +292,10 @@
                             <button type="button"
                                 class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
                                 data-modal-toggle="filterModal">
-                                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+
+                                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" fill="none" viewBox="0 0 24 24">
+
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
                                 </svg>
@@ -317,16 +308,20 @@
                                 <ul class="-mb-px flex flex-wrap text-center text-sm font-medium" id="myTab"
                                     data-tabs-toggle="#myTabContent" role="tablist">
                                     <li class="mr-1" role="presentation">
-                                        <button class="inline-block pb-2 pr-1" id="brand-tab"
-                                            data-tabs-target="#brand" type="button" role="tab"
-                                            aria-controls="profile" aria-selected="false">Brand</button>
+
+                                        <button class="inline-block pb-2 pr-1" id="brand-tab" data-tabs-target="#brand"
+                                            type="button" role="tab" aria-controls="profile"
+                                            aria-selected="false">Brand</button>
+
                                     </li>
                                     <li class="mr-1" role="presentation">
                                         <button
                                             class="inline-block px-2 pb-2 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300"
-                                            id="advanced-filers-tab" data-tabs-target="#advanced-filters"
-                                            type="button" role="tab" aria-controls="advanced-filters"
-                                            aria-selected="false">Advanced Filters</button>
+
+                                            id="advanced-filers-tab" data-tabs-target="#advanced-filters" type="button"
+                                            role="tab" aria-controls="advanced-filters" aria-selected="false">Advanced
+                                            Filters</button>
+
                                     </li>
                                 </ul>
                             </div>
@@ -351,7 +346,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="asus"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Asus
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                Asus
+
                                                 (97) </label>
                                         </div>
 
@@ -360,7 +358,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="acer"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Acer
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                Acer
+
                                                 (234) </label>
                                         </div>
 
@@ -389,7 +390,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="amd"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> AMD
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                AMD
+
                                                 (49) </label>
                                         </div>
 
@@ -422,7 +426,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="bose"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Bose
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                Bose
+
                                                 (97) </label>
                                         </div>
 
@@ -431,7 +438,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="benq"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> BenQ
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                BenQ
+
                                                 (45) </label>
                                         </div>
 
@@ -489,7 +499,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="benq2"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> BenQ
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                BenQ
+
                                                 (23) </label>
                                         </div>
                                     </div>
@@ -558,15 +571,20 @@
                                         </div>
                                     </div>
 
+
                                     <div class="space-y-2">
                                         <h5 class="text-lg font-medium uppercase text-black dark:text-white">D</h5>
+
 
                                         <div class="flex items-center">
                                             <input id="dell" type="checkbox" value=""
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="dell"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Dell
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                Dell
+
                                                 (56) </label>
                                         </div>
 
@@ -595,7 +613,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="dobe"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Dobe
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                Dobe
+
                                                 (5) </label>
                                         </div>
 
@@ -658,7 +679,10 @@
                                                 class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
 
                                             <label for="emi"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> EMI
+
+                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                EMI
+
                                                 (176) </label>
                                         </div>
 
@@ -728,8 +752,9 @@
                                                 class="block text-sm font-medium text-gray-900 dark:text-white"> Min
                                                 Price
                                             </label>
-                                            <input id="min-price" type="range" min="0" max="7000"
-                                                value="300" step="1"
+
+                                            <input id="min-price" type="range" min="0" max="7000" value="300" step="1"
+
                                                 class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700" />
                                         </div>
 
@@ -738,21 +763,24 @@
                                                 class="block text-sm font-medium text-gray-900 dark:text-white"> Max
                                                 Price
                                             </label>
-                                            <input id="max-price" type="range" min="0" max="7000"
-                                                value="3500" step="1"
+
+                                            <input id="max-price" type="range" min="0" max="7000" value="3500" step="1"
+
                                                 class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700" />
                                         </div>
 
                                         <div class="col-span-2 flex items-center justify-between space-x-2">
-                                            <input type="number" id="min-price-input" value="300" min="0"
-                                                max="7000"
+
+                                            <input type="number" id="min-price-input" value="300" min="0" max="7000"
+
                                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 "
                                                 placeholder="" required />
 
                                             <div class="shrink-0 text-sm font-medium dark:text-gray-300">to</div>
 
-                                            <input type="number" id="max-price-input" value="3500" min="0"
-                                                max="7000"
+
+                                            <input type="number" id="max-price-input" value="3500" min="0" max="7000"
+
                                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                                                 placeholder="" required />
                                         </div>
@@ -764,13 +792,14 @@
                                                 class="block text-sm font-medium text-gray-900 dark:text-white"> Min
                                                 Delivery Time (Days) </label>
 
-                                            <input id="min-delivery-time" type="range" min="3"
-                                                max="50" value="30" step="1"
+
+                                            <input id="min-delivery-time" type="range" min="3" max="50" value="30"
+                                                step="1"
                                                 class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700" />
                                         </div>
 
-                                        <input type="number" id="min-delivery-time-input" value="30"
-                                            min="3" max="50"
+                                        <input type="number" id="min-delivery-time-input" value="30" min="3" max="50"
+
                                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 "
                                             placeholder="" required />
                                     </div>
@@ -783,9 +812,10 @@
                                         class="flex w-full items-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                                         <li class="w-full border-r border-gray-200 dark:border-gray-600">
                                             <div class="flex items-center pl-3">
-                                                <input id="condition-all" type="radio" value=""
-                                                    name="list-radio" checked
-                                                    class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600" />
+
+                                                <input id="condition-all" type="radio" value="" name="list-radio"
+                                                    checked
+                                                  class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600" />
                                                 <label for="condition-all"
                                                     class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                                                     All </label>
@@ -793,8 +823,9 @@
                                         </li>
                                         <li class="w-full border-r border-gray-200 dark:border-gray-600">
                                             <div class="flex items-center pl-3">
-                                                <input id="condition-new" type="radio" value=""
-                                                    name="list-radio"
+
+                                                <input id="condition-new" type="radio" value="" name="list-radio"
+
                                                     class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600" />
                                                 <label for="condition-new"
                                                     class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -803,8 +834,9 @@
                                         </li>
                                         <li class="w-full">
                                             <div class="flex items-center pl-3">
-                                                <input id="condition-used" type="radio" value=""
-                                                    name="list-radio"
+
+                                                <input id="condition-used" type="radio" value="" name="list-radio"
+
                                                     class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600" />
                                                 <label for="condition-used"
                                                     class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -974,8 +1006,9 @@
                                             </div>
 
                                             <div class="flex items-center">
-                                                <input id="three-stars" type="radio" value="" name="rating"
-                                                    checked
+
+                                                <input id="three-stars" type="radio" value="" name="rating" checked
+
                                                     class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
                                                 <label for="three-stars" class="ml-2 flex items-center">
                                                     <svg aria-hidden="true" class="h-5 w-5 text-yellow-400"
@@ -1179,12 +1212,15 @@
                                 </div>
 
                                 <div>
-                                    <h6 class="mb-2 text-sm font-medium text-black dark:text-white">Delivery type</h6>
+
+                                    <h6 class="mb-2 text-sm font-medium text-black dark:text-white">Delivery type
+                                    </h6>
 
                                     <ul class="grid grid-cols-2 gap-4">
                                         <li>
-                                            <input type="radio" id="delivery-usa" name="delivery"
-                                                value="delivery-usa" class="peer hidden" checked />
+                                            <input type="radio" id="delivery-usa" name="delivery" value="delivery-usa"
+                                                class="peer hidden" checked />
+
                                             <label for="delivery-usa"
                                                 class="inline-flex w-full cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600 peer-checked:border-primary-600 peer-checked:text-primary-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:peer-checked:text-primary-500 md:p-5">
                                                 <div class="block">
@@ -1205,8 +1241,10 @@
                                             </label>
                                         </li>
                                         <li>
-                                            <input type="radio" id="delivery-asia" name="delivery"
-                                                value="delivery-asia" class="peer hidden" checked />
+
+                                            <input type="radio" id="delivery-asia" name="delivery" value="delivery-asia"
+                                                class="peer hidden" checked />
+
                                             <label for="delivery-asia"
                                                 class="inline-flex w-full cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-600 peer-checked:border-primary-600 peer-checked:text-primary-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:peer-checked:text-primary-500 md:p-5">
                                                 <div class="block">
@@ -1243,39 +1281,5 @@
                 </div>
             </form>
     </section>
-    {{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> --}}
-    {{--     @foreach ($products as $product) --}}
-    {{--         <div class="bg-white p-4 rounded-lg shadow"> --}}
-    {{--             <a href="{{ route('products.show', ['product' => $product->id]) }}"> --}}
-    {{--                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}" --}}
-    {{--                     class="w-full h-48 object-cover rounded"> --}}
-    {{--             </a> --}}
-    {{--             <h3 class="mt-4 text-lg font-semibold"> --}}
-    {{--                 <a href="{{ route('products.show', ['product' => $product->id]) }}">{{ $product->name }}</a> --}}
-    {{--             </h3> --}}
-    {{--             <p class="text-gray-500">{{ $product->description }}</p> --}}
-    {{--             <p class="text-gray-600 mt-2">Category: {{ $product->category?->name }}</p> --}}
-    {{--             <p class="text-gray-800 font-bold mt-2">${{ number_format($product->price, 2) }}</p> --}}
-    {{--             <div class="mt-2 flex items-center"> --}}
-    {{--                 <!-- Display stars for the product --> --}}
-    {{--                 @for ($i = 0; $i < floor($product->rating); $i++) --}}
-    {{--                     <svg xmlns="http://www.w3.org/2000/svg" width="21.87" height="20.801" --}}
-    {{--                         class="text-yellow-400 fill-current"> --}}
-    {{--                         <path --}}
-    {{--                             d="m4.178 20.801 6.758-4.91 6.756 4.91-2.58-7.946 6.758-4.91h-8.352L10.936 0 8.354 7.945H0l6.758 4.91-2.58 7.946z" /> --}}
-    {{--                     </svg> --}}
-    {{--                 @endfor --}}
-    {{--                 @for ($i = $product->rating; $i < 5; $i++) --}}
-    {{--                     <svg xmlns="http://www.w3.org/2000/svg" width="21.87" height="20.801" --}}
-    {{--                         class="text-gray-300 fill-current"> --}}
-    {{--                         <path --}}
-    {{--                             d="m4.178 20.801 6.758-4.91 6.756 4.91-2.58-7.946 6.758-4.91h-8.352L10.936 0 8.354 7.945H0l6.758 4.91-2.58 7.946z" /> --}}
-    {{--                     </svg> --}}
-    {{--                 @endfor --}}
-    {{--                 <span class="ml-2 text-gray-600">{{ $product->rating }}</span> --}}
-    {{--                 <span class="ml-2 text-gray-600">({{ $product->user_reviews_count }} reviews)</span> --}}
-    {{--             </div> --}}
-    {{--         </div> --}}
-    {{--     @endforeach --}}
-    {{-- </div> --}}
+
 </x-layout>
