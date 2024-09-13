@@ -98,8 +98,3 @@ Route::get('/language/{lang}', [LanguageController::class, 'changeLanguage'])->n
 
 
 require __DIR__.'/auth.php';
-
-
-
-
-

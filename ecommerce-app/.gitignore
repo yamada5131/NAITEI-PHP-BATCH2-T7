@@ -18,6 +18,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-"ecommerce-app/.env"
-.php-cs-fixer.cache
-
+"ecommerce-app/.env" 
