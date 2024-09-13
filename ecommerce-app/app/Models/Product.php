@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
@@ -18,14 +19,7 @@ class Product extends Model
 
     public $incrementing = false;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'image',
-        'qty_in_stock',
-        'category_id',
-        'price',
-    ];
+    protected $guarded = [];
 
     protected $keyType = 'string';
 
@@ -36,7 +30,7 @@ class Product extends Model
         });
     }
 
-    public function category(): BelongsTo
+    public function categories(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"  rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     @vite('resources/css/app.css') <!-- Tailwind CSS -->
 </head>
 
@@ -14,7 +14,6 @@
     <!-- Navigation Bar -->
     @include('layouts.navigation')
 
-    
     <!-- Display Error Message -->
     @if (Session::has('error'))
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -268,7 +267,6 @@
                                 <input id="category-{{ $category->id }}" type="checkbox" value="{{ $category->id }}" name="categories[]" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600">
                                 <label for="category-{{ $category->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->name }} ({{ $category->products_count }})</label>
                             </div>
-                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -280,9 +278,6 @@
             </div>
         </div>
     </div>
-</form>
-
-<div class="flex-grow">
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @foreach ($products as $product)
@@ -312,20 +307,24 @@
 
                         <a href="{{ route('products.show', ['product' => $product->id]) }}" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ $product->name }}</a>
                         <p class="text-gray-500 mt-2">{{ $product->description }}</p>
-                        <p class="text-gray-600 mt-2">Category: {{ $product->category?->name }}</p>
                         <div class="mt-2 flex items-center gap-2">
                             <div class="flex items-center">
                                 @for ($i = 0; $i < floor($product->user_reviews_avg_rating); $i++)
-                                    <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
+                                    <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
                                     </svg>
                                 @endfor
                                 @for ($i = $product->user_reviews_avg_rating; $i < 5; $i++)
-                                    <svg class="h-4 w-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
+                                    <svg class="h-4 w-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
                                     </svg>
                                 @endfor
-                                <span class="ml-2 text-gray-600">{{ number_format($product->user_reviews_avg_rating, 1) }}</span>
+                                <span
+                                    class="ml-2 text-gray-600">{{ number_format($product->user_reviews_avg_rating, 1) }}</span>
                                 <span class="ml-2 text-gray-600">({{ $product->user_reviews_count }} reviews)</span>
                             </div>
                         </div>
@@ -346,34 +345,83 @@
     </div>
 </div>
 
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 flex justify-end items-center space-x-4">
+        <!-- Filter Button -->
+        <button data-modal-toggle="filterModal" data-modal-target="filterModal" type="button"
+            class="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                    d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z" />
+            </svg>
+            Filters
+            <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m19 9-7 7-7-7" />
+            </svg>
+        </button>
 
+        <!-- Sort Button -->
+        <button id="sortDropdownButton1" data-dropdown-toggle="dropdownSort1" type="button"
+            class="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4" />
+            </svg>
+            Sort
+            <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m19 9-7 7-7-7" />
+            </svg>
+        </button>
 
 
 @include('layouts.footer')
     <!-- Footer -->
-    
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('myCartDropdownButton1').click();
-});
+            document.getElementById('myCartDropdownButton1').click();
+        });
     </script>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const categoryCheckboxes = document.querySelectorAll('input[name="categories[]"]');
-    const resultsButton = document.querySelector('#filterModal button[type="submit"]');
-    const resetButton = document.querySelector('#filterModal button[type="reset"]');
-    const originalButtonText = resultsButton.textContent;
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryCheckboxes = document.querySelectorAll('input[name="categories[]"]');
+            const resultsButton = document.querySelector('#filterModal button[type="submit"]');
+            const resetButton = document.querySelector('#filterModal button[type="reset"]');
+            const originalButtonText = resultsButton.textContent;
 
-    function updateResultsButton() {
-        const selectedCategories = Array.from(categoryCheckboxes).filter(checkbox => checkbox.checked);
-        let totalProducts = 0;
+            function updateResultsButton() {
+                const selectedCategories = Array.from(categoryCheckboxes).filter(checkbox => checkbox.checked);
+                let totalProducts = 0;
 
-        selectedCategories.forEach(function (checkbox) {
-            const label = document.querySelector(`label[for="${checkbox.id}"]`);
-            const count = parseInt(label.textContent.match(/\((\d+)\)/)[1]);
-            totalProducts += count;
+                selectedCategories.forEach(function (checkbox) {
+                    const label = document.querySelector(`label[for="${checkbox.id}"]`);
+                    const count = parseInt(label.textContent.match(/\((\d+)\)/)[1]);
+                    totalProducts += count;
+                });
+
+                resultsButton.textContent = totalProducts > 0 ? `Show ${totalProducts} results` : 'Show 0 results';
+            }
+
+            categoryCheckboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', updateResultsButton);
+            });
+
+            resetButton.addEventListener('click', function () {
+                // Reset the button text to "Show 0 results" when the reset button is clicked
+                resultsButton.textContent = 'Show 0 results';
+            });
         });
+    </script>
+    <script>
+        function applySort(sortOption) {
+            // Set the sort option in the hidden input
+            document.getElementById('sortInput').value = sortOption;
 
         resultsButton.textContent = totalProducts > 0 ? `Show ${totalProducts} results` : 'Show 0 results';
     }
@@ -435,14 +483,9 @@ function applySort(sortOption) {
 
 </script>
 
+    </script>
 </body>
 
 </html>
 
-
-
-
-
-
-
- <!-- Filter modal -->
+<!-- Filter modal -->

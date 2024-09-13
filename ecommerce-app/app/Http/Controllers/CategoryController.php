@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\ProductCategory;
-use App\Http\Requests\CategoryRequest;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -13,6 +12,12 @@ class CategoryController extends Controller
     //     $categories = ProductCategory::all();
     //     return view('admin.categories.index',compact('categories'));
     // }
+    public function index()
+    {
+        $categories = ProductCategory::all();
+
+        return view('admin.categories.index', compact('categories'));
+    }
 
     public function create()
     {
@@ -32,7 +37,8 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = ProductCategory::findOrFail($id);
-        return view('admin.categories.edit',compact('category'));
+
+        return view('admin.categories.edit', compact('category'));
     }
 
     public function update(CategoryRequest $request, $id)
@@ -43,8 +49,8 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect()->route('/admin')
-                        ->with('success','Category updated successfully');
+        return redirect()->route('categories.index')
+            ->with('success', 'Category updated successfully');
     }
 
     public function destroy($id)
@@ -52,7 +58,7 @@ class CategoryController extends Controller
         $category = ProductCategory::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('/admin')
-                        ->with('success','Category deleted successfully');
+        return redirect()->route('categories.index')
+            ->with('success', 'Category deleted successfully');
     }
 }
