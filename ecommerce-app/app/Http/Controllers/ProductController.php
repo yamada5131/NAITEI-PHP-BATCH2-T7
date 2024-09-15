@@ -32,7 +32,7 @@ class ProductController extends Controller
                 $product->name,
                 $product->description,
                 $product->price,
-                $product->categories ?? 'N/A', // Assuming you have a relationship set up
+                $product->categories->first()->name ?? 'N/A', // Assuming you have a relationship set up
                 $product->image_url,
                 $product->qty_in_stock,
             ];

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function exportCSV()
+    public function exportCSV(): StreamedResponse
     {
         $filename = 'user-data.csv';
 
@@ -68,7 +69,7 @@ class UserController extends Controller
 
     private function getAddresses($user)
     {
-        if (! isset($user->userAddresses)) {
+        if (!isset($user->userAddresses)) {
             return [];
         }
 
@@ -78,6 +79,7 @@ class UserController extends Controller
                 $address->address->address_line2 ?? '',
                 $address->address->city ?? '',
                 $address->address->state ?? '',
+
                 $address->address->country->country_name ?? '',
                 $address->address->postal_code ?? '',
             ]));
@@ -85,11 +87,58 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
      */
-    public function create()
+    public function show(User $user)
     {
-        return view('users.create');
+        return view('users/show', compact('user'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(User $user)
+    {
+        return view('users/edit', compact('user'));
+    }
+
+    public function toggleStatus(User $user)
+    {
+        User::query()->where('id', $user->id)
+            ->update([
+                'is_active' => !($user->is_active),
+            ]);
+
+        return redirect(route('admin.users.index'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $user)
+    {
+        if ($request->hasFile('new_image')) {
+            $new_image = $request->file('new_image')->store('avatars');
+
+            if ($user->photo && Storage::exists($user->photo)) {
+                Storage::delete($user->photo);
+            }
+        } else {
+            $new_image = $user->photo;
+        }
+
+        User::where('id', $user->id)
+            ->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'photo' => $new_image,
+                'telephone' => $request->telephone,
+                'password' => Hash::make($request->new_password),
+            ]);
+
+        return redirect(route('admin.users.index'));
     }
 
     /**
@@ -119,58 +168,11 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for creating a new resource.
      */
-    public function show(User $user)
+    public function create()
     {
-        return view('users/show', compact('user'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        return view('users/edit', compact('user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
-    {
-        if ($request->hasFile('new_image')) {
-            $new_image = $request->file('new_image')->store('avatars');
-
-            if ($user->photo && Storage::exists($user->photo)) {
-                Storage::delete($user->photo);
-            }
-        } else {
-            $new_image = $user->photo;
-        }
-
-        User::query()->where('id', $user->id)
-            ->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'username' => $request->username,
-                'email' => $request->email,
-                'photo' => $new_image,
-                'telephone' => $request->telephone,
-                'password' => Hash::make($request->new_password),
-            ]);
-
-        return redirect(route('admin.users.index'));
-    }
-
-    public function toggleStatus(User $user)
-    {
-        User::query()->where('id', $user->id)
-            ->update([
-                'is_active' => ! ($user->is_active),
-            ]);
-
-        return redirect(route('admin.users.index'));
+        return view('users.create');
     }
 
     /**

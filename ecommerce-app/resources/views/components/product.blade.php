@@ -1,10 +1,9 @@
-@props(
-    ['product']
-)
+@props(['product'])
 
 <div class="bg-white p-4 rounded-lg shadow">
     <a href="{{ route('products.show', ['product' => $product->id]) }}">
-        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-48 object-cover rounded">
+        <img src="{{ Vite::asset('storage/app/' . $product->image_url) }}" alt="{{ $product->name }}"
+            class="w-full h-48 object-cover rounded">
     </a>
     <h3 class="mt-4 text-lg font-semibold">
         <a href="{{ route('products.show', ['product' => $product->id]) }}">{{ $product->name }}</a>
@@ -30,6 +29,3 @@
         <span class="ml-2 text-gray-600">({{ $product->user_reviews_count }} reviews)</span>
     </div>
 </div>
-
-
-

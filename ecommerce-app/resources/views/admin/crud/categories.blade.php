@@ -8,10 +8,14 @@
                 <div class="mb-4">
                     {{-- Include the breadcrumb component --}}
                     @include('admin.partials.breadcrumb', ['current' => 'List'])
-                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">All users</h1>
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">All categories</h1>
                 </div>
                 {{-- Include the search and action buttons component --}}
-                @include('admin.partials.search-and-actions')
+
+                <div class="sm:flex">
+                    @include('components.search')
+                    @include('components.admin-add-button', ['target' => 'category', 'exportRoute' => route('admin.categories.export')])
+                </div>
             </div>
 
         </div>
@@ -20,15 +24,15 @@
         @include('admin.partials.error-alert')
 
         {{-- User table component --}}
-        <x-user-table :users="$users"/>
+        <x-category-table :categories="$categories"/>
 
         <!-- Add User Modal -->
-        <x-add-user-modal/>
+        <x-add-category-modal/>
 
         {{-- Modals --}}
-        @foreach ($users as $user)
-            <x-edit-user-modal :user="$user"/>
-            <x-delete-user-modal :user="$user"/>
+        @foreach ($categories as $category)
+            <x-edit-category-modal :category="$category"/>
+            <x-delete-category-modal :category="$category"/>
         @endforeach
     </div>
 @endsection

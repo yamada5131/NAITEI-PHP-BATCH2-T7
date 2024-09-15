@@ -78,14 +78,14 @@ class User extends Authenticatable
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->attributes['first_name'] . ' ' . $this->attributes['last_name'],
+            get: fn ($value) => $this->attributes['first_name'].' '.$this->attributes['last_name'],
         );
     }
 
     protected function username(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => Str::slug($value),
+            set: fn ($value) => Str::slug($value),
         );
     }
 
@@ -96,5 +96,3 @@ class User extends Authenticatable
         });
     }
 }
-
-

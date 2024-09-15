@@ -2,36 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
 use App\Models\ProductCategory;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    // public function index()
-    // {
-    //     $categories = ProductCategory::all();
-    //     return view('admin.categories.index',compact('categories'));
-    // }
     public function index()
     {
         $categories = ProductCategory::all();
 
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.crud.categories', compact('categories'));
     }
 
-    public function create()
-    {
-        return view('admin.categories.create');
-    }
-
-    public function store(CategoryRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
         $validated = $request->validated();
 
         ProductCategory::create($validated);
 
-        return redirect()->route('/admin')
-                        ->with('success','Category created successfully.');
+        return redirect()->route('admin.categories.index');
+    }
+
+    public function create()
+    {
+        return view('admin.categories.create');
     }
 
     public function edit($id)
@@ -41,7 +35,7 @@ class CategoryController extends Controller
         return view('admin.categories.edit', compact('category'));
     }
 
-    public function update(CategoryRequest $request, $id)
+    public function update(StoreCategoryRequest $request, $id)
     {
         $category = ProductCategory::findOrFail($id);
 
@@ -49,8 +43,7 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Category updated successfully');
+        return redirect()->route('admin.categories.index');
     }
 
     public function destroy($id)
@@ -58,7 +51,34 @@ class CategoryController extends Controller
         $category = ProductCategory::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Category deleted successfully');
+        return redirect()->route('admin.categories.index');
+    }
+
+
+    public function exportToCsv()
+    {
+        $categories = ProductCategory::all();
+
+        $csvData = [];
+        $csvData[] = ['ID', 'Name', 'Description'];
+
+        foreach ($categories as $category) {
+            $csvData[] = [
+                $category->id,
+                $category->name,
+                $category->description,
+            ];
+        }
+
+        $filename = 'categories_' . date('Ymd_His') . '.csv';
+        $handle = fopen($filename, 'w');
+
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        return response()->download($filename)->deleteFileAfterSend(true);
     }
 }

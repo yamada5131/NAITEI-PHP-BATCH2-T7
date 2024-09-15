@@ -19,7 +19,7 @@
         <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
             <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
                 <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                    <img class="w-full dark:hidden" src="{{ asset("storage/" . $product->image_url) }}" alt="{{ $product->image_url }}" />
+                    <img class="w-full dark:hidden" src="{{ Vite::asset('storage/app/' . $product->image_url) }}" alt="{{ $product->image_url }}" />
                 </div>
 
                 <div class="mt-6 sm:mt-8 lg:mt-0">
@@ -74,7 +74,7 @@
                                     cart
                                 </button>
 
-                                <a href="#" title=""
+                                <a href="{{route('orders.index')}}" title=""
                                     class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none inline items-center justify-center"
                                     role="button">
                                     Buy now

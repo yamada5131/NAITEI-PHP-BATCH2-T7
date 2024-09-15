@@ -9,20 +9,17 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- Navigation Bar -->
-    @include('components.admin.navbar-dashboard')
+<!-- Navigation Bar -->
+@include('components.admin.navbar-dashboard')
 
-    <main>
-        <div class="sm:ml-64">
-            <div class="mt-14 bg-white dark:border-gray-700">
-                {{ $slot }}
-            </div>
+<main>
+    <div class="sm:ml-64">
+        <div class="mt-14 bg-white dark:border-gray-700">
+            @yield('content')
         </div>
+    </div>
 
-    </main>
-
-
-    <script></script>
+</main>
 </body>
 
 </html>
